@@ -471,7 +471,10 @@ class Worker(object):
                 pass
 
         # Keep info about what tasks are running (could be in other processes)
-        self._task_result_queue = multiprocessing.Queue()
+        if worker_processes == 1:
+            self._task_result_queue = DequeQueue()
+        else:
+            self._task_result_queue = multiprocessing.Queue()
         self._running_tasks = {}
 
         # Stuff for execution_summary
